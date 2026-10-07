@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Showroom — 360 Auto Detailing{% endblock %}
+{% block content %}
+<h1>Hệ thống showroom</h1>
+<div class="grid-3">
+  {% for shop in showrooms %}
+  <article class="card" style="padding:16px"><h2>{{ shop.name }}{% if shop.is_primary %} · Chính{% endif %}</h2><p>{{ shop.address }}</p><p>{{ shop.hours }}</p><a href="tel:{{ shop.phone }}">{{ shop.phone }}</a></article>
+  {% endfor %}
+</div>
+{% endblock %}

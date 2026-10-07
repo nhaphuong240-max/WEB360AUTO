@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Bài viết — 360 Auto Detailing{% endblock %}
+{% block content %}
+<h1>Bài viết</h1>
+<div class="grid-3">
+  {% for item in articles %}
+  <a class="card" style="padding:14px" href="{% url 'article' item.slug %}"><h2>{{ item.title }}</h2><p>{{ item.summary }}</p></a>
+  {% empty %}<p>Chưa có bài đã đến giờ đăng.</p>{% endfor %}
+</div>
+{% endblock %}

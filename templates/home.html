@@ -1,0 +1,158 @@
+{% load static shop_tags %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>360 Auto Detailing — Phụ kiện xe hơi & chăm sóc xe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'home.css' %}">
+</head>
+<body id="top">
+  <header class="header">
+    <div class="wrap header-bar">
+      {% include "brand_logo.html" with place="header" %}
+      <nav class="nav" id="nav">
+        <a href="{% url 'home' %}">Trang chủ</a>
+        <a href="#gioi-thieu">Giới thiệu</a>
+        <a href="{% url 'services' %}">Dịch vụ</a>
+        <a href="{% url 'catalog' %}">Sản phẩm</a>
+        <a href="{% url 'catalog' %}">Phụ kiện</a>
+        <a href="#lien-he">Liên hệ</a>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="{% url 'search' %}" aria-label="Tìm kiếm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></a>
+        <a class="icon-btn cart-link" href="{% url 'cart' %}" aria-label="Giỏ hàng">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11h11.3l2-7H7"/></svg>
+          {% if cart_count %}<span class="cart-badge">{{ cart_count }}</span>{% endif %}
+        </a>
+        <a class="btn btn-red" href="{% url 'services' %}">Đặt lịch</a>
+        <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-label="Mở menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </div>
+  </header>
+  {% if messages %}{% for message in messages %}<p class="toast show" style="opacity:1">{{ message }}</p>{% endfor %}{% endif %}
+  {% if banner %}
+  <section class="hero">
+    {% if banner.media and banner.is_video %}
+      <video class="hero-photo" autoplay muted loop playsinline {% if banner.poster %}poster="{{ banner.poster.url }}"{% elif banner.image %}poster="{% static banner.image %}"{% endif %}>
+        <source src="{{ banner.media.url }}">
+      </video>
+      {% if banner.poster %}
+        <img class="hero-photo hero-fallback" src="{{ banner.poster.url }}" alt="" hidden>
+      {% elif banner.image %}
+        <img class="hero-photo hero-fallback" src="{% static banner.image %}" alt="" hidden>
+      {% endif %}
+    {% elif banner.media %}
+      <img class="hero-photo" src="{{ banner.media.url }}" alt="">
+    {% elif banner.image %}
+      <img class="hero-photo" src="{% static banner.image %}" alt="">
+    {% endif %}
+    <div class="wrap hero-inner"><div class="hero-copy">
+      <div class="eyebrow">{{ banner.eyebrow }}</div>
+      <h1><span class="hero-line"><span class="l1">Ưu đãi phụ kiện</span> <span class="l2">xe hơi</span></span><b>lên đến 55%</b></h1>
+      <p>{{ banner.subtitle }}</p>
+      <div class="hero-actions">
+        {% if banner.cta_url %}<a class="btn btn-red" href="{{ banner.cta_url }}">{{ banner.cta_label }}</a>{% endif %}
+        <a class="btn btn-ghost" href="#dich-vu">Xem dịch vụ</a>
+      </div>
+    </div></div>
+  </section>
+  {% endif %}
+  <div class="trust"><div class="wrap trust-grid">
+    {% for item in trust %}
+    <article class="trust-card"><div><strong>{{ item.title }}</strong><span>{{ item.text }}</span></div></article>
+    {% endfor %}
+  </div></div>
+  <section id="dich-vu"><div class="wrap">
+    <div class="sec-head"><div class="sec-title"><span class="ticks"></span><h2>Dịch vụ</h2><span class="ticks"></span></div><p class="sec-kicker">Chuyên 360</p></div>
+    <div class="card-grid">
+      {% for service in services %}
+      <article class="service-card">
+        <img src="{% static service.image %}" alt="">
+        <div class="body"><h3>{{ service.name }}</h3><p>{{ service.summary }}</p><a class="btn btn-blue" href="{% url 'service' service.slug %}">Xem chi tiết</a></div>
+      </article>
+      {% endfor %}
+    </div>
+  </div></section>
+  <section id="danh-muc"><div class="wrap">
+    <div class="sec-head"><div class="sec-title"><span class="ticks"></span><h2>Danh mục phụ kiện</h2><span class="ticks"></span></div><p class="sec-kicker">Hàng chính hãng, lắp đặt tại chỗ</p></div>
+    <div class="cat-grid">
+      {% for cat in categories %}
+      <a class="cat-card" href="{% url 'catalog_cat' cat.slug %}">
+        {% if cat.badge %}<span class="badge">{{ cat.badge }}</span>{% endif %}
+        <img src="{% static cat.image %}" alt=""><strong>{{ cat.name }}</strong>
+      </a>
+      {% endfor %}
+    </div>
+  </div></section>
+  <section id="khuyen-mai"><div class="wrap">
+    <div class="sec-head"><div class="sec-title"><span class="ticks"></span><h2>Khuyến mãi</h2><span class="ticks"></span></div><p class="sec-kicker">Ưu đãi trong tuần</p></div>
+    <div class="promo-grid">
+      {% for item in featured %}
+      <article class="product {% if forloop.first %}feature{% endif %}">
+        <div class="photo">{% if item.card_off %}<span class="badge">-{{ item.card_off }}%</span>{% endif %}<img src="{% static item.image %}" alt=""></div>
+        <div class="info">
+          <h3><a href="{% url 'product' item.slug %}">{{ item.name }}</a></h3>
+          {% if forloop.first %}<p style="margin:0;color:#5d6b80;font-size:13px">{{ item.blurb }}</p>{% endif %}
+          <div class="product-foot">
+            <div class="prices"><b>{{ item.card_price|money }}</b>{% if item.card_compare %}<s>{{ item.card_compare|money }}</s>{% endif %}</div>
+            {% if item.multi %}
+            <a class="add-cart" href="{% url 'product' item.slug %}" aria-label="Chọn phiên bản">+</a>
+            {% elif item.in_stock %}
+            <form class="add-form" method="post" action="{% url 'cart_add' %}">{% csrf_token %}
+              <input type="hidden" name="sku" value="{{ item.card_variant.sku }}">
+              <input type="hidden" name="mode" value="ship">
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <button class="add-cart" type="submit" aria-label="Thêm vào giỏ">+</button>
+            </form>
+            {% else %}<span>Hết hàng</span>{% endif %}
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div></section>
+  <section id="gioi-thieu"><div class="wrap"><div class="about-panel">
+    <div class="about-copy">
+      <div class="sec-title"><span class="ticks"></span><h2>Về 360 Auto Detailing</h2><span class="ticks"></span></div>
+      <p class="sec-kicker">Showroom chăm sóc xe và phụ kiện</p>
+      <p>360 Auto Detailing kết hợp xưởng detailing và cửa hàng phụ kiện. Mỗi xe được tư vấn theo đời xe, thi công theo quy trình và bàn giao kèm phiếu bảo hành.</p>
+      <div class="stats"><div class="stat"><b>12+</b><span>năm kinh nghiệm</span></div><div class="stat"><b>35.000</b><span>xe đã phục vụ</span></div><div class="stat"><b>3</b><span>showroom</span></div></div>
+    </div>
+    <div class="about-visual"><img src="{% static 'img/about.jpg' %}" alt="Xe sau khi hoàn thiện"></div>
+  </div></div></section>
+  <section id="lien-he"><div class="wrap">
+    <div class="sec-head"><div class="sec-title"><span class="ticks"></span><h2>Liên hệ</h2><span class="ticks"></span></div><p class="sec-kicker">360 Auto Detailing</p></div>
+    {% if primary %}
+    <div class="contact-card">
+      <div class="contact-info">
+        <h3>Đặt lịch xem xe và phụ kiện</h3>
+        <a class="phone-lg" href="tel:{{ hotline_digits }}">{{ site_config.hotline }}</a>
+        <p><strong>Email</strong><br>{{ site_config.email }}</p>
+        <p><strong>Showroom</strong><br>{{ primary.address }}</p>
+        <p><strong>Giờ mở cửa</strong><br>{{ primary.hours }}, thứ 2 đến Chủ nhật</p>
+        <a class="btn btn-blue" href="{% url 'services' %}">Đặt lịch hẹn</a>
+      </div>
+      <div class="contact-photo"><img src="{% static 'img/seat.jpg' %}" alt="Showroom"></div>
+    </div>
+    {% endif %}
+  </div></section>
+  <footer class="footer"><div class="wrap footer-bottom">{% include "brand_logo.html" with place="footer" %}<span>© 2026 360 Auto Detailing</span><span>Hotline: {{ site_config.hotline }}</span></div></footer>
+  <div class="floats">
+    {% if site_config.messenger_url %}<a class="float-btn msg" href="{{ site_config.messenger_url }}" aria-label="Messenger">M</a>{% endif %}
+    {% if site_config.zalo_url %}<a class="float-btn zalo" href="{{ site_config.zalo_url }}">Zalo</a>{% endif %}
+    <a class="float-btn phone" href="tel:{{ hotline_digits }}" aria-label="Gọi">☎</a>
+  </div>
+  <script>
+    document.getElementById("menuToggle")?.addEventListener("click", () => document.getElementById("nav").classList.toggle("open"));
+    document.querySelectorAll(".hero video").forEach((video) => {
+      video.addEventListener("error", () => {
+        video.hidden = true;
+        video.parentElement.querySelector(".hero-fallback")?.removeAttribute("hidden");
+      }, true);
+    });
+  </script>
+</body>
+</html>

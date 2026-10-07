@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Điều chuyển kho — 360 Auto Detailing{% endblock %}
+{% block content %}
+{% include "staff_nav.html" %}
+<h1>Điều chuyển kho</h1>
+<p class="note">Tạo phiếu chưa đổi tồn. Xuất kho trừ điểm đi. Điểm đến chỉ tăng khi xác nhận đã nhận. Không lấy tồn showroom này để hứa lắp tại showroom khác.</p>
+<form class="card" method="post" action="{% url 'transfer_create' %}" style="padding:16px;margin-bottom:16px">{% csrf_token %}
+  <label class="field">Biến thể
+    <select name="variant">{% for item in variants %}<option value="{{ item.id }}">{{ item.sku }} · {{ item.product.name }}</option>{% endfor %}</select>
+  </label>
+  <label class="field">Số lượng<input name="qty" type="number" min="1" value="1"></label>
+  <label class="field">Điểm đi
+    <select name="source">{% for code, name in places %}<option value="{{ code }}">{{ name }}</option>{% endfor %}</select>
+  </label>
+  <label class="field">Điểm đến
+    <select name="destination">{% for code, name in places %}<option value="{{ code }}" {% if forloop.counter == 2 %}selected{% endif %}>{{ name }}</option>{% endfor %}</select>
+  </label>
+  <button class="btn btn-red" type="submit">Tạo phiếu</button>
+</form>
+{% for row in rows %}
+<article class="card" style="padding:14px;margin-bottom:10px">
+  <b>{{ row.code }}</b> · {{ row.variant.sku }} × {{ row.qty }} · {{ row.get_status_display }}<br>
+  {{ row.source_name }} → {{ row.destination_name }}
+  <form method="post" action="{% url 'transfer_act' row.code %}">{% csrf_token %}
+    {% if row.status == "cho_xuat" %}
+    <button class="btn btn-blue" name="viec" value="xuat" type="submit">Xuất kho</button>
+    <button class="btn btn-line" name="viec" value="huy" type="submit">Hủy phiếu</button>
+    {% elif row.status == "dang_di" %}
+    <button class="btn btn-red" name="viec" value="nhan" type="submit">Điểm đến đã nhận</button>
+    {% endif %}
+  </form>
+</article>
+{% empty %}<p>Chưa có phiếu.</p>{% endfor %}
+{% endblock %}

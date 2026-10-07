@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load shop_tags %}
+{% block title %}Tra cứu đơn — 360 Auto Detailing{% endblock %}
+{% block content %}
+<h1>Tra cứu đơn</h1>
+<form class="card" method="get" style="padding:16px;max-width:460px">
+  <label class="field">Mã đơn {{ form.ma }}</label>
+  <label class="field">Số điện thoại đặt hàng {{ form.phone }}</label>
+  <button class="btn btn-blue" type="submit">Xem</button>
+</form>
+{% if checked and not order %}<p class="alert">Không khớp mã đơn và số điện thoại.</p>{% endif %}
+{% if order %}
+<div class="card" style="padding:16px;margin-top:12px">
+  <b>{{ status_label }}</b>
+  <p>{{ order.code }} · {{ order.total|money }}</p>
+  <p>Không hiện địa chỉ đầy đủ trên trang tra cứu công khai.</p>
+</div>
+{% endif %}
+{% endblock %}

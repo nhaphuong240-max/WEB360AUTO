@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Dịch vụ — 360 Auto Detailing{% endblock %}
+{% block content %}
+<h1>Dịch vụ</h1>
+<div class="grid-3">
+  {% for item in services %}
+  <a class="card" style="padding:12px" href="{% url 'service' item.slug %}"><img src="{% static item.image %}" alt="" style="height:140px;width:100%;object-fit:cover;border-radius:10px"><h3>{{ item.name }}</h3><p>{{ item.summary }}</p></a>
+  {% endfor %}
+</div>
+{% endblock %}

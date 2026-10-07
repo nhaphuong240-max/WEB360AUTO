@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>360 Auto Detailing — Phụ kiện xe hơi & chăm sóc xe</title>
+  <meta name="description" content="360 Auto Detailing — ưu đãi phụ kiện xe hơi lên đến 55%. Phủ ceramic, dán phim, bọc ghế da và phụ kiện chính hãng.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1f5eff;
+      --blue-dark: #1547d6;
+      --blue-deep: #0b2f86;
+      --navy: #071426;
+      --red: #ef233c;
+      --red-dark: #d01028;
+      --ink: #142033;
+      --muted: #5d6b80;
+      --line: #e6edf5;
+      --card: #ffffff;
+      --bg: #f4f7fb;
+      --shadow: 0 12px 32px rgba(16, 42, 92, 0.08);
+      --radius: 16px;
+      --wrap: 1160px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Be Vietnam Pro", system-ui, sans-serif;
+      color: var(--ink);
+      background-color: var(--bg);
+      background-image: radial-gradient(#d7e0ec 1.15px, transparent 1.15px);
+      background-size: 20px 20px;
+      line-height: 1.5;
+    }
+    img { max-width: 100%; display: block; }
+    button, input, select, textarea { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; }
+    .wrap { width: min(var(--wrap), calc(100% - 40px)); margin: 0 auto; }
+
+    .icon-btn, .btn, .logo, .nav a, .float-btn, .search-hit {
+      transition: 0.18s ease;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: linear-gradient(90deg, #1a56f5 0%, #2d74ff 100%);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(18, 64, 180, 0.18);
+    }
+    .header-bar {
+      height: 74px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+    }
+    .logo-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--blue);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      box-shadow: inset 0 0 0 3px #d7e4ff;
+    }
+    .logo strong { display: block; font-size: 13px; letter-spacing: 0.08em; line-height: 1.15; }
+    .logo small { display: block; opacity: 0.85; font-size: 11px; font-weight: 500; }
+    .nav { display: flex; gap: 4px; margin-left: auto; }
+    .nav a {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+    .nav a:hover, .nav a.active { background: rgba(255,255,255,0.16); }
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      display: grid;
+      place-items: center;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.24); }
+    .cart-link { position: relative; }
+    .cart-badge {
+      position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px;
+      border-radius: 99px; background: #ef233c; color: #fff; font-size: 11px;
+      display: grid; place-items: center; padding: 0 4px; font-weight: 800;
+    }
+    .cart-badge[hidden] { display: none; }
+    a.btn-blue { display: block; text-align: center; }
+    a.cat-card { display: block; color: inherit; }
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 18px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-blue { background: var(--blue); color: #fff; width: 100%; }
+    .btn-blue:hover { background: var(--blue-dark); }
+    .btn-ghost {
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.7);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+    .menu-toggle { display: none; }
+
+    .search-panel {
+      display: none;
+      background: #fff;
+      color: var(--ink);
+      border-top: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 16px 30px rgba(10, 30, 70, 0.12);
+    }
+    .search-panel.open { display: block; }
+    .search-panel .wrap { padding: 16px 0 18px; }
+    .search-panel input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      outline: none;
+    }
+    .search-panel input:focus { border-color: var(--blue); }
+    .search-hits { margin-top: 10px; display: grid; gap: 6px; }
+    .search-hit {
+      text-align: left;
+      background: #f6f8fc;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-weight: 600;
+    }
+    .search-hit span { display: block; color: var(--muted); font-weight: 500; font-size: 12px; }
+    .search-hit:hover { background: #e8f0ff; }
+    .search-empty { color: var(--muted); margin: 8px 0 0; }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 540px;
+      background: linear-gradient(90deg, #0a2a86 0%, #123ea8 46%, #0d2468 100%);
+      color: #fff;
+      overflow: hidden;
+    }
+    .hero-photo {
+      position: absolute;
+      inset: 0 0 0 34%;
+      width: 66%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 72% 55%;
+      mask-image: linear-gradient(90deg, transparent, #000 22%);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, #0b2f8f 0%, rgba(11,47,143,0.94) 28%, rgba(16,58,170,0.45) 58%, rgba(6,18,48,0.12) 100%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      min-height: 540px;
+      display: flex;
+      align-items: center;
+      padding: 54px 0 110px;
+    }
+    .hero-copy { max-width: 560px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+    .hero h1 {
+      margin: 16px 0 10px;
+      font-size: 44px;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    .hero-line { display: block; white-space: nowrap; }
+    .hero h1 b {
+      display: block;
+      font-size: 60px;
+      color: #fff;
+      margin-top: 2px;
+    }
+    .hero p { margin: 0 0 22px; max-width: 440px; color: rgba(255,255,255,0.86); font-size: 16px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero .btn { padding: 13px 22px; font-size: 15px; }
+
+    /* Trust */
+    .trust { position: relative; z-index: 2; margin-top: -58px; }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .trust-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 16px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+    .trust-ico {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 46px;
+      border-radius: 12px;
+      background: #eaf1ff;
+      color: var(--blue);
+      display: grid;
+      place-items: center;
+    }
+    .trust-card strong { display: block; font-size: 14.5px; }
+    .trust-card span { color: var(--muted); font-size: 12.5px; }
+
+    /* Sections */
+    section { padding: 72px 0; }
+    .sec-head { text-align: center; margin-bottom: 28px; }
+    .sec-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 0;
+    }
+    .sec-title h2 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .ticks {
+      width: 14px;
+      height: 26px;
+      background:
+        linear-gradient(#1f5eff, #1f5eff) left center / 4px 100% no-repeat,
+        linear-gradient(#1f5eff, #1f5eff) right center / 4px 100% no-repeat;
+    }
+    .sec-kicker { margin: 8px 0 0; color: var(--blue); font-weight: 600; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .service-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #edf2f8;
+    }
+    .service-card img { height: 190px; width: 100%; object-fit: cover; }
+    .service-card .body { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .service-card h3 { margin: 0; font-size: 18px; }
+    .service-card p { margin: 0; color: var(--muted); font-size: 14px; flex: 1; }
+    .service-card .btn { margin-top: 8px; }
+
+    /* Categories */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+    }
+    .cat-card {
+      background: #fff;
+      border: 1px solid #edf2f8;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      text-align: left;
+      padding: 0;
+      position: relative;
+    }
+    .cat-card img { height: 132px; width: 100%; object-fit: cover; }
+    .cat-card strong { display: block; padding: 12px 12px 14px; font-size: 14px; }
+    .cat-card:hover { transform: translateY(-3px); }
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--red);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 4px 8px;
+    }
+
+    /* Promo */
+    .promo-grid {
+      display: grid;
+      grid-template-columns: 1.35fr repeat(3, 1fr);
+      gap: 16px;
+    }
+    .product {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #edf2f8;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .product .photo { position: relative; }
+    .product img { height: 180px; width: 100%; object-fit: cover; }
+    .product.feature img { height: 250px; }
+    .product .info { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .product h3 { margin: 0; font-size: 15.5px; }
+    .prices { display: flex; gap: 8px; align-items: baseline; }
+    .prices b { color: var(--red); font-size: 18px; }
+    .prices s { color: #93a0b3; font-size: 13px; }
+    .add-cart {
+      margin-top: auto;
+      align-self: flex-end;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--blue);
+      color: #fff;
+      display: grid;
+      place-items: center;
+    }
+    .add-cart:hover { background: var(--blue-dark); }
+    .product-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: 6px; }
+
+    /* About */
+    .about-panel {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      background: linear-gradient(100deg, #0c2f86 0%, #1a4ed8 55%, #123ea8 100%);
+      color: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(12, 47, 134, 0.22);
+    }
+    .about-copy { padding: 42px 40px; }
+    .about-copy .sec-title { justify-content: flex-start; }
+    .about-copy h2 { font-size: 26px; }
+    .about-copy .ticks {
+      background:
+        linear-gradient(#9dbeff, #9dbeff) left center / 4px 100% no-repeat,
+        linear-gradient(#9dbeff, #9dbeff) right center / 4px 100% no-repeat;
+    }
+    .about-copy .sec-kicker { color: #d6e4ff; text-align: left; }
+    .about-copy p { color: rgba(255,255,255,0.88); }
+    .checks { list-style: none; padding: 0; margin: 16px 0 22px; display: grid; gap: 8px; }
+    .checks li { display: flex; gap: 8px; align-items: flex-start; font-weight: 500; }
+    .checks svg { flex: 0 0 auto; margin-top: 2px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .stat {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .stat b { display: block; font-size: 22px; }
+    .stat span { font-size: 12px; color: rgba(255,255,255,0.8); }
+    .about-visual { position: relative; min-height: 420px; }
+    .about-visual img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .about-chip {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      background: rgba(7, 20, 50, 0.72);
+      backdrop-filter: blur(6px);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      max-width: calc(100% - 32px);
+    }
+    .about-chip b, .about-chip span { display: block; }
+
+    /* Contact */
+    .contact-card {
+      display: grid;
+      grid-template-columns: 0.9fr 1.05fr 0.9fr;
+      background: #fff;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid #edf2f8;
+      min-height: 380px;
+    }
+    .contact-info { padding: 32px 28px; }
+    .contact-info h3 { margin: 0 0 8px; font-size: 20px; }
+    .phone-lg {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--blue);
+      font-size: 26px;
+      font-weight: 800;
+      margin: 8px 0 16px;
+    }
+    .info-row { display: flex; gap: 10px; margin: 0 0 12px; color: var(--muted); font-size: 14.5px; }
+    .info-row svg { flex: 0 0 auto; color: var(--blue); margin-top: 2px; }
+    .info-row strong { color: var(--ink); }
+    .contact-photo img { width: 100%; height: 100%; object-fit: cover; min-height: 280px; }
+    .fake-map {
+      position: relative;
+      min-height: 280px;
+      background:
+        linear-gradient(#d7e3f2, #d7e3f2) center / 100% 18px no-repeat,
+        linear-gradient(#c5d4e8, #c5d4e8) center / 18px 100% no-repeat,
+        repeating-linear-gradient(0deg, #e7eef7 0 34px, #f7fafc 34px 68px),
+        repeating-linear-gradient(90deg, transparent 0 46px, rgba(180,198,220,0.55) 46px 47px);
+      background-color: #e7eef7;
+    }
+    .map-block {
+      position: absolute;
+      background: #f4f7fb;
+      border: 1px solid #d5e1ee;
+      border-radius: 4px;
+    }
+    .pin {
+      position: absolute;
+      left: 48%;
+      top: 42%;
+      width: 18px;
+      height: 18px;
+      background: var(--red);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      box-shadow: 0 8px 16px rgba(239, 35, 60, 0.35);
+    }
+    .pin::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      left: 5px;
+      top: 5px;
+    }
+    .map-label {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+      box-shadow: var(--shadow);
+    }
+    .map-label b { display: block; }
+
+    /* Footer */
+    .footer {
+      background: var(--navy);
+      color: #d5deea;
+      padding: 48px 0 0;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 28px;
+      padding-bottom: 28px;
+    }
+    .footer .logo-badge { width: 42px; height: 42px; }
+    .footer h3 { margin: 0 0 12px; color: #fff; font-size: 15px; letter-spacing: 0.04em; }
+    .footer a { display: block; padding: 4px 0; color: #b7c3d4; font-size: 14px; }
+    .footer a:hover { color: #fff; }
+    .footer p { margin: 12px 0 0; font-size: 14px; max-width: 280px; }
+    .socials { display: flex; gap: 8px; margin-top: 16px; }
+    .socials a {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      padding: 0;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .socials .fb { background: #1877f2; }
+    .socials .yt { background: #ff0033; }
+    .socials .tt { background: #111; }
+    .socials .zl { background: #0068ff; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 14px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      color: #8ea0b8;
+    }
+
+    /* Float */
+    .floats {
+      position: fixed;
+      right: 16px;
+      bottom: 24px;
+      z-index: 35;
+      display: grid;
+      gap: 10px;
+    }
+    .float-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 0;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.16);
+    }
+    .float-btn.phone { background: #22a45a; }
+    .float-btn.zalo { background: #0068ff; font-weight: 800; font-size: 13px; }
+    .float-btn.msg { background: linear-gradient(135deg, #00b2ff, #a033ff); }
+    .float-btn.top { background: #123; display: none; }
+    .float-btn.top.show { display: grid; }
+    .float-btn:hover { transform: translateY(-2px); }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(16px);
+      background: #10203a;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.2s ease;
+      z-index: 70;
+      font-weight: 600;
+      box-shadow: var(--shadow);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 16, 32, 0.55);
+      z-index: 80;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal.open { display: flex; }
+    .dialog {
+      width: min(560px, 100%);
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    }
+    .dialog header, .dialog .dialog-body { padding: 18px 20px; }
+    .dialog header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+    .dialog h3 { margin: 0; font-size: 18px; }
+    .dialog .close {
+      width: 34px; height: 34px; border-radius: 8px; border: 0; background: #f2f5fa;
+    }
+    .detail-img { width: 100%; height: 200px; object-fit: cover; }
+    .form { display: grid; gap: 10px; }
+    .form[hidden] { display: none; }
+    .form label { font-size: 13px; font-weight: 600; display: grid; gap: 6px; }
+    .form input, .form select, .form textarea {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+    .form input:focus, .form select:focus, .form textarea:focus { outline: 2px solid #c9daff; border-color: var(--blue); }
+    .success {
+      display: none;
+      background: #eefbf3;
+      color: #146c36;
+      border-radius: 12px;
+      padding: 14px;
+      font-weight: 600;
+    }
+    .success.show { display: block; }
+
+    @media (max-width: 1020px) {
+      .nav { display: none; }
+      .nav.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 74px;
+        left: 0;
+        right: 0;
+        margin: 0;
+        background: #1a56f5;
+        padding: 8px 16px 14px;
+        gap: 2px;
+        z-index: 5;
+      }
+      .menu-toggle { display: grid; }
+      .header-bar { position: static; }
+      .trust-grid, .promo-grid, .footer-grid { grid-template-columns: 1fr 1fr; }
+      .cat-grid { grid-template-columns: repeat(3, 1fr); }
+      .card-grid, .about-panel, .contact-card { grid-template-columns: 1fr 1fr; }
+      .promo-grid .feature { grid-column: 1 / -1; }
+      .contact-card { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 36px; }
+      .hero-line { white-space: normal; }
+      .hero h1 b { font-size: 44px; }
+      .about-visual { min-height: 280px; }
+    }
+    @media (max-width: 720px) {
+      .trust-grid, .card-grid, .cat-grid, .promo-grid, .footer-grid, .about-panel, .stats {
+        grid-template-columns: 1fr;
+      }
+      .hero { min-height: 460px; }
+      .hero-inner { min-height: 460px; padding-bottom: 90px; }
+      .hero h1 { font-size: 30px; }
+      .hero h1 b { font-size: 36px; }
+      .hero-line .l1, .hero-line .l2 { display: block; }
+      .hero-photo { inset: 0; width: 100%; opacity: 0.35; mask-image: none; }
+      .header-bar .btn-red span { display: none; }
+      .footer-bottom { flex-direction: column; }
+      .logo small { display: none; }
+    }
+  </style>
+</head>
+<body id="top">
+  <header class="header">
+    <div class="wrap header-bar">
+      <a class="logo" href="#top" aria-label="360 Auto Detailing">
+        <span class="logo-badge">360</span>
+        <span>
+          <strong>AUTO DETAILING</strong>
+          <small>Phụ kiện & chăm sóc xe</small>
+        </span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#top" class="active">Trang chủ</a>
+        <a href="#gioi-thieu">Giới thiệu</a>
+        <a href="dich-vu.html">Dịch vụ</a>
+        <a href="phu-kien.html">Sản phẩm</a>
+        <a href="phu-kien.html">Phụ kiện</a>
+        <a href="#lien-he">Liên hệ</a>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn cart-link" href="gio-hang.html" aria-label="Giỏ hàng">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11h11.3l2-7H7"/></svg>
+          <span class="cart-badge" id="cartBadge" hidden>0</span>
+        </a>
+        <button class="icon-btn" id="searchToggle" type="button" aria-label="Tìm kiếm" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="btn btn-red" type="button" data-open="booking">Đặt lịch</button>
+        <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-label="Mở menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="search-panel" id="searchPanel">
+      <div class="wrap">
+        <input id="searchInput" type="search" placeholder="Tìm dịch vụ, phụ kiện... ví dụ: ceramic, camera, thảm" aria-label="Ô tìm kiếm">
+        <div class="search-hits" id="searchHits"></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <img class="hero-photo" src="assets/img/svc-front.jpg" alt="Xe trong xưởng ánh đèn">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <div class="eyebrow">360 AUTO DETAILING</div>
+        <h1><span class="hero-line"><span class="l1">Ưu đãi phụ kiện</span> <span class="l2">xe hơi</span></span><b>lên đến 55%</b></h1>
+        <p>Màn hình Android, camera 360, thảm lót sàn, đèn bi và gói chăm sóc xe — lắp đặt tại showroom, bảo hành rõ ràng.</p>
+        <div class="hero-actions">
+          <a class="btn btn-red" href="phu-kien.html">Mua ngay</a>
+          <a class="btn btn-ghost" href="#dich-vu">Xem dịch vụ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust">
+    <div class="wrap trust-grid">
+      <article class="trust-card">
+        <div class="trust-ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 5-3.4 7.8-8 9-4.6-1.2-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div><strong>Bảo hành chính hãng</strong><span>Hóa đơn và tem bảo hành</span></div>
+      </article>
+      <article class="trust-card">
+        <div class="trust-ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+        </div>
+        <div><strong>Giao hàng toàn quốc</strong><span>Đóng gói chắc, giao nhanh</span></div>
+      </article>
+      <article class="trust-card">
+        <div class="trust-ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        </div>
+        <div><strong>Showroom trải nghiệm</strong><span>Xem hàng thật trước khi lắp</span></div>
+      </article>
+      <article class="trust-card">
+        <div class="trust-ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 13a8 8 0 0 1 16 0"/><path d="M4 13v5a2 2 0 0 0 2 2h1v-7H4zM20 13v5a2 2 0 0 1-2 2h-1v-7h3z"/><path d="M12 19v2"/></svg>
+        </div>
+        <div><strong>Hỗ trợ 24/7</strong><span>Tư vấn phụ kiện theo dòng xe</span></div>
+      </article>
+    </div>
+  </div>
+
+  <section id="dich-vu">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-title"><span class="ticks" aria-hidden="true"></span><h2>Dịch vụ</h2><span class="ticks" aria-hidden="true"></span></div>
+        <p class="sec-kicker">Chuyên 360</p>
+      </div>
+      <div class="card-grid">
+        <article class="service-card" data-search="Phủ ceramic 9H bảo vệ sơn">
+          <img src="assets/img/polish.jpg" alt="Kỹ thuật viên chăm sóc bề mặt sơn xe">
+          <div class="body">
+            <h3>Phủ ceramic 9H</h3>
+            <p>Lớp phủ bóng sâu, hạn chế bám nước và trầy xước nhẹ. Bảo hành lớp phủ theo gói.</p>
+            <a class="btn btn-blue" href="dich-vu.html?dv=ceramic">Xem chi tiết</a>
+          </div>
+        </article>
+        <article class="service-card" data-search="Dán phim cách nhiệt">
+          <img src="assets/img/svc-film.jpg" alt="Khoang lái sau khi dán phim cách nhiệt">
+          <div class="body">
+            <h3>Dán phim cách nhiệt</h3>
+            <p>Cản nhiệt, chống UV, giảm chói. Phim kính lái, sườn và kính hậu theo xe.</p>
+            <a class="btn btn-blue" href="dich-vu.html?dv=film">Xem chi tiết</a>
+          </div>
+        </article>
+        <article class="service-card" data-search="Bọc ghế da cao cấp">
+          <img src="assets/img/steer.jpg" alt="Nội thất da và vô lăng">
+          <div class="body">
+            <h3>Bọc ghế da</h3>
+            <p>Da thật hoặc simili cao cấp, may form ghế zin, phối màu theo nội thất.</p>
+            <a class="btn btn-blue" href="dich-vu.html?dv=leather">Xem chi tiết</a>
+          </div>
+        </article>
+        <article class="service-card" data-search="Detailing nội thất vệ sinh khoang xe">
+          <img src="assets/img/svc-ceramic.jpg" alt="Chăm sóc ngoại thất xe">
+          <div class="body">
+            <h3>Detailing nội thất</h3>
+            <p>Vệ sinh sâu ghế, trần, sàn. Khử mùi và dưỡng bề mặt nhựa, da.</p>
+            <a class="btn btn-blue" href="dich-vu.html?dv=detail">Xem chi tiết</a>
+          </div>
+        </article>
+        <article class="service-card" data-search="Cách âm chống ồn gầm cửa">
+          <img src="assets/img/dash2.jpg" alt="Kỹ thuật viên thi công trên xe">
+          <div class="body">
+            <h3>Cách âm chống ồn</h3>
+            <p>Dán cách âm sàn, cửa và vòm bánh. Khoang lái êm hơn trên đường cao tốc.</p>
+            <a class="btn btn-blue" href="dich-vu.html?dv=sound">Xem chi tiết</a>
+          </div>
+        </article>
+        <article class="service-card" data-search="Rửa xe chăm sóc sơn định kỳ">
+          <img src="assets/img/svc-wash.jpg" alt="Rửa và chăm sóc ngoại thất xe">
+          <div class="body">
+            <h3>Rửa xe chuyên sâu</h3>
+            <p>Quy trình 2 xô, khăn microfiber, dưỡng lốp và kính. Gói bảo dưỡng định kỳ.</p>
+            <a class="btn btn-blue" href="dich-vu.html?dv=wash">Xem chi tiết</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="danh-muc">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-title"><span class="ticks" aria-hidden="true"></span><h2>Danh mục phụ kiện</h2><span class="ticks" aria-hidden="true"></span></div>
+        <p class="sec-kicker">Hàng chính hãng, lắp đặt tại chỗ</p>
+      </div>
+      <div class="cat-grid">
+        <a class="cat-card" href="phu-kien.html?cat=man-hinh-android">
+          <span class="badge">Hot</span>
+          <img src="assets/img/steer.jpg" alt="Khoang lái phù hợp màn hình Android" style="object-position: 62% 35%">
+          <strong>Màn hình Android</strong>
+        </a>
+        <a class="cat-card" href="phu-kien.html?cat=camera-hanh-trinh">
+          <img src="assets/img/svc-front.jpg" alt="Đầu xe, vị trí gắn camera">
+          <strong>Camera hành trình</strong>
+        </a>
+        <a class="cat-card" href="phu-kien.html?cat=tham-lot-san">
+          <span class="badge">-30%</span>
+          <img src="assets/img/steer.jpg" alt="Ghế và sàn nội thất" style="object-position: center 92%">
+          <strong>Thảm lót sàn</strong>
+        </a>
+        <a class="cat-card" href="phu-kien.html?cat=den-bi-laser">
+          <img src="assets/img/hero5.jpg" alt="Cụm đèn trước của xe">
+          <strong>Đèn bi laser</strong>
+        </a>
+        <a class="cat-card" href="phu-kien.html?cat=mam-xe">
+          <img src="assets/img/rim.jpg" alt="Mâm và lốp xe trong xưởng" style="object-position: 70% 40%">
+          <strong>Mâm xe</strong>
+        </a>
+        <a class="cat-card" href="phu-kien.html?cat=cam-bien-lop">
+          <span class="badge">-20%</span>
+          <img src="assets/img/blackcar.jpg" alt="Mâm xe gắn phụ kiện">
+          <strong>Cảm biến lốp</strong>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="khuyen-mai">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-title"><span class="ticks" aria-hidden="true"></span><h2>Khuyến mãi</h2><span class="ticks" aria-hidden="true"></span></div>
+        <p class="sec-kicker">Ưu đãi trong tuần</p>
+      </div>
+      <div class="promo-grid">
+        <article class="product feature" data-search="Thùng lưu trữ cốp xe 360">
+          <div class="photo">
+            <span class="badge">-47%</span>
+            <img src="assets/img/svc-film.jpg" alt="Phía sau xe, khu vực cốp">
+          </div>
+          <div class="info">
+            <h3><a href="san-pham.html?slug=thung-cop-360">Thùng lưu trữ cốp xe 360</a></h3>
+            <p style="margin:0;color:#5d6b80;font-size:13px">Chống nước, cố định trong cốp, ngăn đồ gọn.</p>
+            <div class="product-foot">
+              <div class="prices"><b>890.000đ</b><s>1.690.000đ</s></div>
+              <button class="add-cart" type="button" data-slug="thung-cop-360" aria-label="Thêm thùng lưu trữ vào giỏ">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11h11.3l2-7H7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="product" data-search="Nước hoa khe gió">
+          <div class="photo">
+            <span class="badge">-44%</span>
+            <img src="assets/img/steer.jpg" alt="Không gian nội thất gắn nước hoa xe">
+          </div>
+          <div class="info">
+            <h3><a href="san-pham.html?slug=nuoc-hoa-khe-gio">Nước hoa khe gió</a></h3>
+            <div class="product-foot">
+              <div class="prices"><b>219.000đ</b><s>390.000đ</s></div>
+              <button class="add-cart" type="button" data-slug="nuoc-hoa-khe-gio" aria-label="Thêm nước hoa vào giỏ">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11h11.3l2-7H7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="product" data-search="Ốc mâm titan">
+          <div class="photo">
+            <span class="badge">-42%</span>
+            <img src="assets/img/rim.jpg" alt="Mâm xe trong xưởng">
+          </div>
+          <div class="info">
+            <h3><a href="san-pham.html?slug=oc-mam-titan">Bộ ốc mâm titan</a></h3>
+            <div class="product-foot">
+              <div class="prices"><b>259.000đ</b><s>450.000đ</s></div>
+              <button class="add-cart" type="button" data-slug="oc-mam-titan" aria-label="Thêm ốc mâm vào giỏ">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11h11.3l2-7H7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="product" data-search="Camera hành trình 4K">
+          <div class="photo">
+            <span class="badge">-43%</span>
+            <img src="assets/img/hero5.jpg" alt="Góc đầu xe lắp camera hành trình">
+          </div>
+          <div class="info">
+            <h3><a href="san-pham.html?slug=camera-hanh-trinh-4k">Camera hành trình 4K</a></h3>
+            <div class="product-foot">
+              <div class="prices"><b>1.890.000đ</b><s>3.290.000đ</s></div>
+              <a class="add-cart" href="san-pham.html?slug=camera-hanh-trinh-4k" aria-label="Chọn phiên bản camera">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11h11.3l2-7H7"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="gioi-thieu">
+    <div class="wrap">
+      <div class="about-panel">
+        <div class="about-copy">
+          <div class="sec-title"><span class="ticks" aria-hidden="true"></span><h2>Về 360 Auto Detailing</h2><span class="ticks" aria-hidden="true"></span></div>
+          <p class="sec-kicker">Showroom chăm sóc xe và phụ kiện</p>
+          <p>360 Auto Detailing kết hợp xưởng detailing và cửa hàng phụ kiện. Mỗi xe được tư vấn theo đời xe, thi công theo quy trình và bàn giao kèm phiếu bảo hành.</p>
+          <ul class="checks">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9dbeff" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Phụ kiện rõ nguồn gốc, có hóa đơn</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9dbeff" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Kỹ thuật viên cố định theo hạng mục</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9dbeff" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Khu trải nghiệm trước khi quyết định lắp</li>
+          </ul>
+          <div class="stats">
+            <div class="stat"><b>12+</b><span>năm kinh nghiệm</span></div>
+            <div class="stat"><b>35.000</b><span>xe đã phục vụ</span></div>
+            <div class="stat"><b>6</b><span>showroom</span></div>
+          </div>
+        </div>
+        <div class="about-visual">
+          <img src="assets/img/about.jpg" alt="Xe sang sau khi hoàn thiện tại 360">
+          <div class="about-chip"><b>Gói hoàn thiện sơn & nội thất</b><span>Bảo hành minh bạch theo hạng mục</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lien-he">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-title"><span class="ticks" aria-hidden="true"></span><h2>Liên hệ</h2><span class="ticks" aria-hidden="true"></span></div>
+        <p class="sec-kicker">360 Auto Detailing</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-info">
+          <h3>Đặt lịch xem xe và phụ kiện</h3>
+          <a class="phone-lg" href="tel:0901360360">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h4l2 5-3 2a12 12 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2z"/></svg>
+            0901 360 360
+          </a>
+          <p class="info-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg><span><strong>Email</strong><br>datlich@360autodetailing.vn</span></p>
+          <p class="info-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span><strong>Showroom</strong><br>215 Nguyễn Hữu Thọ, Tân Hưng, Quận 7, TP. Hồ Chí Minh</span></p>
+          <p class="info-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v5l3 2"/></svg><span><strong>Giờ mở cửa</strong><br>08:00 – 20:00, thứ 2 đến Chủ nhật</span></p>
+          <button class="btn btn-blue" type="button" data-open="booking" style="margin-top:8px">Đặt lịch hẹn</button>
+        </div>
+        <div class="contact-photo">
+          <img src="assets/img/seat.jpg" alt="Xe trưng bày trong showroom">
+        </div>
+        <div class="fake-map" role="img" aria-label="Sơ đồ vị trí showroom Quận 7">
+          <span class="map-block" style="width:70px;height:48px;left:18px;top:28px"></span>
+          <span class="map-block" style="width:54px;height:70px;left:24px;top:120px"></span>
+          <span class="map-block" style="width:80px;height:40px;right:18px;top:36px"></span>
+          <span class="map-block" style="width:64px;height:64px;right:28px;bottom:48px"></span>
+          <span class="pin"></span>
+          <div class="map-label"><b>360 Auto Detailing</b>Quận 7, TP. Hồ Chí Minh</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div>
+        <a class="logo" href="#top">
+          <span class="logo-badge">360</span>
+          <span><strong>AUTO DETAILING</strong><small>Phụ kiện & chăm sóc xe</small></span>
+        </a>
+        <p>Mockup trang chủ cửa hàng detailing và phụ kiện xe hơi. Nội dung, giá và địa chỉ dùng để trình bày giao diện.</p>
+        <div class="socials">
+          <a class="fb" href="#lien-he" aria-label="Facebook">f</a>
+          <a class="yt" href="#lien-he" aria-label="YouTube">▶</a>
+          <a class="tt" href="#lien-he" aria-label="TikTok">♪</a>
+          <a class="zl" href="#lien-he" aria-label="Zalo">Z</a>
+        </div>
+      </div>
+      <div>
+        <h3>Dịch vụ</h3>
+        <a href="#dich-vu">Phủ ceramic</a>
+        <a href="#dich-vu">Dán phim cách nhiệt</a>
+        <a href="#dich-vu">Bọc ghế da</a>
+        <a href="#dich-vu">Cách âm chống ồn</a>
+      </div>
+      <div>
+        <h3>Phụ kiện</h3>
+        <a href="#danh-muc">Màn hình Android</a>
+        <a href="#danh-muc">Camera hành trình</a>
+        <a href="#danh-muc">Thảm lót sàn</a>
+        <a href="#khuyen-mai">Khuyến mãi</a>
+      </div>
+      <div>
+        <h3>Hỗ trợ</h3>
+        <a href="#lien-he">Đặt lịch</a>
+        <a href="#lien-he">Hệ thống showroom</a>
+        <a href="#gioi-thieu">Về chúng tôi</a>
+        <a href="tel:0901360360">Hotline 0901 360 360</a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 360 Auto Detailing. Bản mockup giao diện.</span>
+      <span>Hotline: 0901 360 360</span>
+    </div>
+  </footer>
+
+  <div class="floats">
+    <button class="float-btn msg" type="button" data-toast="Messenger mockup: 360 Auto Detailing" aria-label="Messenger">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.5 3 2 7 2 12.1 2 15 3.4 17.5 5.6 19.2V21l2.5-1.4c1.2.3 2.5.5 3.9.5 5.5 0 10-4 10-9.1S17.5 3 12 3zm1 12.2l-2.5-2.7-4.9 2.7 5.4-5.7 2.6 2.7 4.8-2.7-5.4 5.7z"/></svg>
+    </button>
+    <button class="float-btn zalo" type="button" data-toast="Zalo mockup: 0901 360 360" aria-label="Zalo">Zalo</button>
+    <a class="float-btn phone" href="tel:0901360360" aria-label="Gọi hotline">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h4l2 5-3 2a12 12 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2z"/></svg>
+    </a>
+    <button class="float-btn top" id="toTop" type="button" aria-label="Lên đầu trang">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 14l6-6 6 6"/></svg>
+    </button>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="dialog">
+      <img class="detail-img" id="detailImg" alt="">
+      <header>
+        <h3 id="detailTitle">Dịch vụ</h3>
+        <button class="close" type="button" data-close="detailModal" aria-label="Đóng">×</button>
+      </header>
+      <div class="dialog-body">
+        <p id="detailText" style="margin-top:0;color:#5d6b80"></p>
+        <button class="btn btn-red" type="button" id="detailBook">Đặt lịch dịch vụ này</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="booking" role="dialog" aria-modal="true" aria-labelledby="bookTitle">
+    <div class="dialog">
+      <header>
+        <h3 id="bookTitle">Đặt lịch hẹn</h3>
+        <button class="close" type="button" data-close="booking" aria-label="Đóng">×</button>
+      </header>
+      <div class="dialog-body">
+        <form class="form" id="bookForm">
+          <label>Họ và tên
+            <input name="name" required placeholder="Nguyễn Văn A">
+          </label>
+          <label>Số điện thoại
+            <input name="phone" required inputmode="tel" placeholder="09xx xxx xxx" pattern="[0-9+\s]{8,15}">
+          </label>
+          <label>Hạng mục
+            <select name="service" id="bookService" required>
+              <option>Phủ ceramic 9H</option>
+              <option>Dán phim cách nhiệt</option>
+              <option>Bọc ghế da</option>
+              <option>Detailing nội thất</option>
+              <option>Cách âm chống ồn</option>
+              <option>Rửa xe chuyên sâu</option>
+              <option>Tư vấn phụ kiện</option>
+            </select>
+          </label>
+          <label>Ngày mong muốn
+            <input name="date" type="date" required>
+          </label>
+          <label>Ghi chú
+            <textarea name="note" rows="3" placeholder="Dòng xe, giờ rảnh..."></textarea>
+          </label>
+          <button class="btn btn-blue" type="submit">Gửi yêu cầu</button>
+        </form>
+        <div class="success" id="bookSuccess">Đã nhận lịch hẹn (mockup). Showroom sẽ gọi lại số bạn vừa nhập.</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/store.js"></script>
+  <script>
+    const services = {
+      ceramic: {
+        title: "Phủ ceramic 9H",
+        img: "assets/img/polish.jpg",
+        text: "Xử lý bề mặt, phủ lớp ceramic và nghỉ đủ thời gian đóng rắn. Gói gồm rửa kỹ, đánh bóng nhẹ nếu sơn còn tốt, và phiếu bảo hành lớp phủ."
+      },
+      film: {
+        title: "Dán phim cách nhiệt",
+        img: "assets/img/svc-film.jpg",
+        text: "Đo kính theo xe, dán phim cách nhiệt kính lái, sườn và hậu. Có lựa chọn độ truyền sáng để giữ tầm nhìn ban đêm."
+      },
+      leather: {
+        title: "Bọc ghế da",
+        img: "assets/img/steer.jpg",
+        text: "Lấy form ghế, may áo da và bọc lại từng vị trí. Giữ được túi khí ghế nếu xe trang bị. Khách chọn màu và chỉ may tại showroom."
+      },
+      detail: {
+        title: "Detailing nội thất",
+        img: "assets/img/svc-ceramic.jpg",
+        text: "Hút bụi, xịt dung dịch theo chất liệu, chà ghế nỉ hoặc dưỡng da, lau trần và khử mùi khoang máy lạnh."
+      },
+      sound: {
+        title: "Cách âm chống ồn",
+        img: "assets/img/dash2.jpg",
+        text: "Tháo nội thất cần thiết, dán vật liệu cách âm sàn, cửa và hốc bánh, lắp lại và kiểm tra tiếng ồn khi chạy thử."
+      },
+      wash: {
+        title: "Rửa xe chuyên sâu",
+        img: "assets/img/svc-wash.jpg",
+        text: "Xả áp lực, rửa bằng phương pháp 2 xô, làm khô khăn mềm, dưỡng lốp và làm sạch kính trong ngoài."
+      }
+    };
+
+    const toast = document.getElementById("toast");
+    let toastTimer;
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    let lastFocus = null;
+    function openModal(id) {
+      lastFocus = document.activeElement;
+      const modal = document.getElementById(id);
+      modal.classList.add("open");
+      const focusable = modal.querySelector("input, select, textarea") || modal.querySelector("button");
+      if (focusable) focusable.focus();
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("open");
+      if (lastFocus) lastFocus.focus();
+    }
+
+    document.querySelectorAll("[data-open]").forEach((btn) => {
+      btn.addEventListener("click", () => openModal(btn.dataset.open));
+    });
+    document.querySelectorAll("[data-close]").forEach((btn) => {
+      btn.addEventListener("click", () => closeModal(btn.dataset.close));
+    });
+    document.querySelectorAll(".modal").forEach((modal) => {
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) closeModal(modal.id);
+      });
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        document.querySelectorAll(".modal.open").forEach((modal) => closeModal(modal.id));
+      }
+    });
+
+    document.querySelectorAll("[data-detail]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const item = services[btn.dataset.detail];
+        document.getElementById("detailTitle").textContent = item.title;
+        document.getElementById("detailText").textContent = item.text;
+        const image = document.getElementById("detailImg");
+        image.src = item.img;
+        image.alt = item.title;
+        const select = document.getElementById("bookService");
+        const option = [...select.options].find((opt) => opt.textContent === item.title);
+        if (option) select.value = option.value;
+        openModal("detailModal");
+      });
+    });
+    function resetBooking() {
+      bookForm.hidden = false;
+      document.getElementById("bookSuccess").classList.remove("show");
+      bookForm.reset();
+    }
+    document.getElementById("detailBook").addEventListener("click", () => {
+      closeModal("detailModal");
+      resetBooking();
+      openModal("booking");
+    });
+
+    const bookForm = document.getElementById("bookForm");
+    bookForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!bookForm.reportValidity()) return;
+      bookForm.hidden = true;
+      document.getElementById("bookSuccess").classList.add("show");
+    });
+    document.querySelectorAll('[data-open="booking"]').forEach((btn) => {
+      btn.addEventListener("click", resetBooking);
+    });
+
+    let cartCount = 0;
+    function refreshBadge() {
+      const badge = document.getElementById("cartBadge");
+      if (!badge || typeof A360 === "undefined") return;
+      const count = A360.cart.count();
+      badge.hidden = count < 1;
+      badge.textContent = String(count);
+    }
+    document.querySelectorAll("[data-slug]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const result = A360.cart.add({ slug: btn.dataset.slug, qty: 1, mode: "ship" });
+        refreshBadge();
+        showToast(result.message);
+      });
+    });
+    refreshBadge();
+    document.querySelectorAll("[data-cat]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        showToast("Danh mục " + btn.dataset.cat);
+        document.getElementById("khuyen-mai").scrollIntoView({ behavior: "smooth" });
+      });
+    });
+    document.querySelectorAll("[data-toast]").forEach((btn) => {
+      btn.addEventListener("click", () => showToast(btn.dataset.toast));
+    });
+
+    const nav = document.getElementById("nav");
+    document.getElementById("menuToggle").addEventListener("click", () => {
+      const open = nav.classList.toggle("open");
+      document.getElementById("menuToggle").setAttribute("aria-expanded", String(open));
+    });
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => nav.classList.remove("open"));
+    });
+
+    const searchPanel = document.getElementById("searchPanel");
+    const searchInput = document.getElementById("searchInput");
+    const searchHits = document.getElementById("searchHits");
+    const searchItems = [...document.querySelectorAll("[data-search]")].map((node) => ({
+      label: node.dataset.search,
+      id: node.closest("section").id
+    }));
+    document.getElementById("searchToggle").addEventListener("click", () => {
+      const open = searchPanel.classList.toggle("open");
+      document.getElementById("searchToggle").setAttribute("aria-expanded", String(open));
+      if (open) searchInput.focus();
+    });
+    function renderHits() {
+      const q = searchInput.value.trim().toLowerCase();
+      searchHits.innerHTML = "";
+      if (!q) return;
+      const found = searchItems.filter((item) => item.label.toLowerCase().includes(q));
+      if (!found.length) {
+        searchHits.innerHTML = '<p class="search-empty">Không thấy mục phù hợp.</p>';
+        return;
+      }
+      found.forEach((item) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "search-hit";
+        button.innerHTML = item.label + "<span>Đi tới mục trên trang</span>";
+        button.addEventListener("click", () => {
+          document.getElementById(item.id).scrollIntoView({ behavior: "smooth" });
+          searchPanel.classList.remove("open");
+          searchInput.value = "";
+          searchHits.innerHTML = "";
+        });
+        searchHits.appendChild(button);
+      });
+    }
+    searchInput.addEventListener("input", renderHits);
+
+    const toTop = document.getElementById("toTop");
+    const sections = [...document.querySelectorAll("section[id], #top")];
+    const navLinks = [...nav.querySelectorAll("a")];
+    window.addEventListener("scroll", () => {
+      toTop.classList.toggle("show", window.scrollY > 500);
+      const marker = window.scrollY + 120;
+      let current = "top";
+      document.querySelectorAll("section[id]").forEach((section) => {
+        if (section.offsetTop <= marker) current = section.id;
+      });
+      navLinks.forEach((link) => {
+        const hash = link.getAttribute("href").slice(1) || "top";
+        link.classList.toggle("active", hash === current || (current === "top" && hash === "top"));
+      });
+    }, { passive: true });
+    toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  </script>
+</body>
+</html>

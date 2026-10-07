@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}360 Auto Detailing{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'app.css' %}">
+</head>
+<body>
+  <header class="header">
+    <div class="wrap header-bar">
+      {% include "brand_logo.html" with place="header" %}
+      <nav class="nav" id="nav">
+        <a href="{% url 'home' %}">Trang chủ</a>
+        <a href="{% url 'services' %}">Dịch vụ</a>
+        <a href="{% url 'catalog' %}">Sản phẩm</a>
+        <a href="{% url 'showrooms' %}">Showroom</a>
+        <a href="{% url 'home' %}#lien-he">Liên hệ</a>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-btn" href="{% url 'search' %}" aria-label="Tìm kiếm">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </a>
+        <a class="cart-link" href="{% url 'cart' %}" aria-label="Giỏ hàng">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.2 11h11.3l2-7H7"/></svg>
+          {% if cart_count %}<span class="cart-badge">{{ cart_count }}</span>{% endif %}
+        </a>
+        <a class="btn btn-red" href="{% url 'services' %}">Đặt lịch</a>
+        <button class="icon-btn menu-toggle" type="button" id="menuToggle" aria-label="Mở menu">☰</button>
+      </div>
+    </div>
+  </header>
+  <main class="page"><div class="wrap">
+    {% if messages %}
+      {% for message in messages %}<p class="{% if message.tags == 'error' %}alert{% else %}okbox{% endif %}">{{ message }}</p>{% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </div></main>
+  <footer class="footer">
+    <div class="wrap footer-row">
+      {% include "brand_logo.html" with place="footer" %}
+      <span>© 2026 360 Auto Detailing</span>
+      <span><a href="{% url 'lookup' %}">Tra cứu đơn</a> · <a href="{% url 'account' %}">Tài khoản</a> · <a href="{% url 'chat' %}">Chat</a> · <a href="/quan-tri/">Khu vận hành</a></span>
+    </div>
+  </footer>
+  <div class="chat-dock">
+    {% if site_config.zalo_url %}<a class="bubble zalo" href="{{ site_config.zalo_url }}">Zalo</a>{% endif %}
+    {% if site_config.messenger_url %}<a class="bubble chat" href="{{ site_config.messenger_url }}" aria-label="Messenger">M</a>{% endif %}
+    <a class="bubble phone" href="tel:{{ hotline_digits }}" aria-label="Gọi">☎</a>
+  </div>
+  <script>
+    document.getElementById("menuToggle")?.addEventListener("click", () => document.getElementById("nav").classList.toggle("open"));
+  </script>
+</body>
+</html>

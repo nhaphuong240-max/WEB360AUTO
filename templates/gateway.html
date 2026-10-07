@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load shop_tags %}
+{% block title %}Cổng {{ gateway|upper }} — 360 Auto Detailing{% endblock %}
+{% block content %}
+<div class="card" style="padding:18px">
+  <h1>Cổng thử {{ gateway|upper }}</h1>
+  <p>Đơn {{ order.code }} · số tiền {{ order.total|money }}. Đây là cổng giả lập trên máy chủ, không gửi số thẻ đi đâu.</p>
+  <form method="post" action="{% url 'gateway_result' order.code %}">{% csrf_token %}
+    <button class="btn btn-red" name="ket_qua" value="ok" type="submit">Báo thành công</button>
+    <button class="btn btn-line" name="ket_qua" value="ok" type="submit">Báo thành công lần nữa</button>
+    <button class="btn btn-line" name="ket_qua" value="lech" type="submit">Báo lệch số tiền</button>
+    <button class="btn btn-line" name="ket_qua" value="huy" type="submit">Khách hủy trên cổng</button>
+    <button class="btn btn-line" name="ket_qua" value="ok" type="submit" formaction="{% url 'gateway_ipn' order.code %}">Gửi thông báo máy chủ</button>
+  </form>
+</div>
+{% endblock %}

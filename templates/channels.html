@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Kênh chat — 360 Auto Detailing{% endblock %}
+{% block content %}
+{% include "staff_nav.html" %}
+<h1>Kênh Zalo và Messenger</h1>
+<p class="note">Đây là cổng giả lập trên máy chủ. Chưa có quyền Zalo OA hay Facebook Page, nên tin không ra mạng.</p>
+<div class="grid-2">
+  <div>
+    {% for link in links %}
+    <article class="card" style="padding:14px;margin-bottom:10px">
+      <b>{{ link.label }}</b> · {% if link.connected %}Đang nối{% else %}Đang ngắt{% endif %}
+      <form method="post">{% csrf_token %}
+        <input type="hidden" name="viec" value="ket_noi">
+        <input type="hidden" name="kenh" value="{{ link.channel }}">
+        {% if link.connected %}
+        <button class="btn btn-line" name="noi" value="0" type="submit">Ngắt kênh</button>
+        {% else %}
+        <button class="btn btn-blue" name="noi" value="1" type="submit">Nối lại</button>
+        {% endif %}
+      </form>
+    </article>
+    {% empty %}<p>Chưa có kênh. Chạy lại lệnh nạp dữ liệu.</p>{% endfor %}
+  </div>
+  <form class="card" method="post" style="padding:16px">{% csrf_token %}
+    <h2>Khách nhắn vào kênh</h2>
+    <input type="hidden" name="viec" value="gui">
+    <label class="field">Kênh
+      <select name="kenh">
+        <option value="zalo">Zalo OA</option>
+        <option value="messenger">Messenger</option>
+      </select>
+    </label>
+    <label class="field">Mã khách trên kênh<input name="external" placeholder="zalo-lan"></label>
+    <label class="field">Tên<input name="name" value="Lan Phạm"></label>
+    <label class="field">Số điện thoại<input name="phone" value="0912345678"></label>
+    <label class="field">Nội dung<textarea name="body" required>Mình muốn hỏi lịch phủ ceramic.</textarea></label>
+    <button class="btn btn-red" type="submit">Đưa vào hộp thư</button>
+  </form>
+</div>
+{% endblock %}

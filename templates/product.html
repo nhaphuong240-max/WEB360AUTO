@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static shop_tags %}
+{% block title %}{{ product.name }} — 360 Auto Detailing{% endblock %}
+{% block content %}
+<p class="crumb"><a href="{% url 'home' %}">Trang chủ</a> / <a href="{% url 'catalog_cat' product.category.slug %}">{{ product.category.name }}</a> / {{ product.name }}</p>
+<div class="pdp">
+  <div class="card gallery"><img src="{% static product.image %}" alt="{{ product.name }}"></div>
+  <div class="card buy">
+    <p class="tag">{{ product.brand }} · {{ current.sku }}</p>
+    <h1>{{ product.name }}</h1>
+    <div class="price"><b>{{ price|money }}</b> {% if compare %}<s>{{ compare|money }}</s>{% endif %}</div>
+    <p>{{ product.blurb }}</p>
+    {% if fit_text %}<p class="note">{{ fit_text }}</p>{% endif %}
+    {% if stopped %}<p class="alert">Ngừng kinh doanh</p>{% endif %}
+    <strong>Phiên bản</strong>
+    <div class="variants">
+      {% for item in variants %}
+      <a class="btn {% if item.sku == current.sku %}btn-blue{% else %}btn-line{% endif %}" href="?v={{ item.sku }}&mode={{ mode }}&shop={{ shop_slug }}">{{ item.name }}</a>
+      {% endfor %}
+    </div>
+    {% if product.allow_ship %}
+    <a class="choice {% if mode == 'ship' %}on{% endif %}" href="?v={{ current.sku }}&mode=ship"><span><b>Giao tận nơi</b><br>Kho giao hàng còn {{ ship_qty }}</span></a>
+    {% endif %}
+    {% if product.allow_install %}
+    <a class="choice {% if mode == 'install' %}on{% endif %}" href="?v={{ current.sku }}&mode=install&shop={{ shop_slug }}"><span><b>Lắp hoặc nhận tại showroom</b><br>{% if shops %}Chọn showroom còn hàng{% else %}Hết hàng tại showroom{% endif %}</span></a>
+    {% endif %}
+    {% if mode == "install" and shops %}
+    <form method="get"><input type="hidden" name="v" value="{{ current.sku }}"><input type="hidden" name="mode" value="install">
+      <label class="field">Showroom<select name="shop" onchange="this.form.submit()">{% for row in shops %}<option value="{{ row.shop.slug }}" {% if row.shop.slug == shop_slug %}selected{% endif %}>{{ row.shop.name }} · còn {{ row.qty }}</option>{% endfor %}</select></label>
+    </form>
+    {% endif %}
+    {% if not stopped %}
+    <form method="post" action="{% url 'cart_add' %}">{% csrf_token %}
+      <input type="hidden" name="sku" value="{{ current.sku }}">
+      <input type="hidden" name="mode" value="{{ mode }}">
+      <input type="hidden" name="shop" value="{{ shop_slug }}">
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <label class="field">Số lượng<input name="qty" type="number" min="1" max="20" value="1"></label>
+      <button class="btn btn-red" type="submit">Thêm vào giỏ</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+<div class="card" style="padding:16px;margin-top:16px">
+  <p>{{ product.blurb }} Bảo hành {% if product.warranty_months %}{{ product.warranty_months }} tháng{% else %}theo hóa đơn{% endif %}.</p>
+  <table class="spec-table">{% for spec in product.specs.all %}<tr><td>{{ spec.name }}</td><td>{{ spec.value }}</td></tr>{% endfor %}</table>
+  <h2>Đánh giá {% if review_avg %}· {{ review_avg|floatformat:1 }} sao{% else %}· chưa có điểm{% endif %}</h2>
+  {% for review in reviews %}<p><b>{{ review.stars }} sao</b> — {{ review.body }}</p>{% empty %}<p>Chưa có đánh giá đã duyệt.</p>{% endfor %}
+  {% if can_review %}
+  <form method="post" action="{% url 'review_add' product.slug %}" enctype="multipart/form-data">{% csrf_token %}
+    <input type="hidden" name="sku" value="{{ current.sku }}">
+    <label class="field">Số sao<input name="stars" type="number" min="1" max="5" value="5"></label>
+    <label class="field">Nội dung<textarea name="body" minlength="20" maxlength="1000" required></textarea></label>
+    <label class="field">Ảnh, tối đa 4<input type="file" name="images" accept="image/jpeg,image/png,image/webp" multiple></label>
+    <button class="btn btn-blue" type="submit">Gửi đánh giá</button>
+  </form>
+  {% elif not customer %}<p class="note">Đăng nhập bằng tài khoản đã mua sản phẩm này để đánh giá.</p>{% endif %}
+</div>
+{% endblock %}

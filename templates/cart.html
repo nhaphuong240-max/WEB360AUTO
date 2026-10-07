@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static shop_tags %}
+{% block title %}Giỏ hàng — 360 Auto Detailing{% endblock %}
+{% block content %}
+<p class="crumb"><a href="{% url 'home' %}">Trang chủ</a> / Giỏ hàng</p>
+<h1>Giỏ hàng</h1>
+{% if mixed %}<div class="alert">Một đơn không gồm cả giao tận nơi và lắp tại showroom. Hãy thanh toán từng nhóm.</div>{% endif %}
+{% if not lines %}<div class="card" style="padding:16px"><p>Giỏ đang trống.</p><a class="btn btn-blue" href="{% url 'catalog' %}">Xem phụ kiện</a></div>{% endif %}
+{% for line in lines %}
+<article class="card" style="padding:12px 14px;margin-bottom:10px"><div class="cart-line">
+  <img src="{% static line.variant.product.image %}" alt="">
+  <div>
+    <strong>{{ line.variant.product.name }}</strong>
+    <div>{{ line.variant.name }} · {% if line.mode == "ship" %}Giao tận nơi{% else %}Lắp tại {{ line.showroom.name }}{% endif %}</div>
+    <div>{{ line.unit|money }}</div>
+    {% if line.invalid %}<div class="alert">{{ line.invalid }}</div>{% endif %}
+    <form method="post" action="{% url 'cart_qty' %}" style="display:inline">{% csrf_token %}<input type="hidden" name="line" value="{{ line.id }}"><input type="hidden" name="dir" value="-1"><button type="submit">−</button></form>
+    <span>{{ line.qty }}</span>
+    <form method="post" action="{% url 'cart_qty' %}" style="display:inline">{% csrf_token %}<input type="hidden" name="line" value="{{ line.id }}"><input type="hidden" name="dir" value="1"><button type="submit">+</button></form>
+    <form method="post" action="{% url 'cart_remove' %}" style="display:inline">{% csrf_token %}<input type="hidden" name="line" value="{{ line.id }}"><button type="submit">Xóa</button></form>
+  </div>
+  <b>{{ line.line_total|money }}</b>
+</div></article>
+{% endfor %}
+{% for group in modes %}
+<aside class="card money" style="padding:16px;margin:12px 0">
+  <h2>{% if group.mode == "ship" %}Nhóm giao hàng{% else %}Nhóm lắp tại showroom{% endif %}</h2>
+  <div><span>Tạm tính</span><b>{{ group.subtotal|money }}</b></div>
+  {% if group.blocked %}<p class="alert">Có dòng hết hàng. Xóa hoặc giảm số lượng trước khi thanh toán.</p>{% endif %}
+  <a class="btn btn-red {% if group.blocked %}is-off{% endif %}" href="{% url 'checkout' %}?mode={{ group.mode }}">Thanh toán nhóm này</a>
+</aside>
+{% endfor %}
+{% endblock %}

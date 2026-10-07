@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load shop_tags %}
+{% block title %}Đơn {{ order.code }} — 360 Auto Detailing{% endblock %}
+{% block content %}
+<div class="steps"><span>Giỏ</span><span>Thanh toán</span><span class="now">Xác nhận</span></div>
+<div class="card" style="padding:18px">
+  <h1>Đơn {{ order.code }}</h1>
+  <p class="tag {% if order.paid or order.payment == 'cash' %}ok{% else %}warn{% endif %}">{{ status_label }}{% if order.paid %} · Đã thanh toán{% endif %}</p>
+  <p>{{ order.name }} · {{ order.phone }}</p>
+  {% if order.mode == "ship" %}<p>Giao tới {{ order.address }}</p>{% else %}<p>Lắp tại {{ order.showroom.name }} · {{ order.appointment_date }} {{ order.appointment_time }}</p>{% endif %}
+  <ul>{% for line in order.lines.all %}<li>{{ line.name }} × {{ line.qty }} — {{ line.unit_price|money }}</li>{% endfor %}</ul>
+  <p><b>Tổng {{ order.total|money }}</b></p>
+  {% if show_bank %}
+  <div class="okbox"><b>Chuyển khoản</b><br>{{ site_config.bank_name }} · {{ site_config.bank_account }} · {{ site_config.bank_holder }}<br>Số tiền {{ order.total|money }}<br>Nội dung bắt buộc: {{ order.code }}<br>Đơn giữ hàng {{ site_config.transfer_hold_hours }} giờ.</div>
+  {% endif %}
+  {% if order.status == "cho_thanh_toan" or order.status == "cho_xac_nhan" %}
+  <form method="post" action="{% url 'cancel' order.code %}" style="margin-top:12px">{% csrf_token %}
+    <label class="field">Số điện thoại đặt hàng để hủy<input name="phone" required pattern="0[0-9]{9}"></label>
+    <button class="btn btn-line" type="submit">Hủy đơn</button>
+  </form>
+  {% endif %}
+  <p><a href="{% url 'lookup' %}">Tra cứu đơn</a></p>
+</div>
+{% endblock %}

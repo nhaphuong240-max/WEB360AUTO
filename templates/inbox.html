@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Hộp thư — 360 Auto Detailing{% endblock %}
+{% block content %}
+{% include "staff_nav.html" %}
+<h1>Hộp thư</h1>
+<p>
+  <a href="{% url 'inbox' %}">Tất cả</a> ·
+  <a href="?kenh=web">Web</a> ·
+  <a href="?kenh=zalo">Zalo</a> ·
+  <a href="?kenh=messenger">Messenger</a>
+</p>
+<div class="grid-2">
+  <div>
+    {% for row in rows %}
+    <a class="card" style="display:block;padding:12px;margin-bottom:8px" href="?id={{ row.pk }}{% if kenh %}&kenh={{ kenh }}{% endif %}">
+      <b>{{ row.name|default:"Khách vãng lai" }}</b> · {{ row.channel }} · {{ row.get_status_display }}{% if row.overdue %} · quá hạn{% endif %}<br>
+      {{ row.phone }} · {{ row.showroom.name|default:"Chưa gán" }}
+    </a>
+    {% empty %}<p>Chưa có hội thoại.</p>{% endfor %}
+  </div>
+  <div class="card" style="padding:16px">
+    {% if current %}
+      {% for item in thread %}
+      <p style="{% if item.internal %}background:#fff7ea{% endif %}"><b>{{ item.sender }}</b> — {{ item.body }}</p>
+      {% endfor %}
+      {% if channel_closed %}<p class="alert">Kênh đang ngắt</p>{% endif %}
+      <form method="post" action="{% url 'inbox_reply' current.pk %}">{% csrf_token %}
+        <label class="field">Trả lời<textarea name="body" {% if channel_closed %}disabled{% endif %}></textarea></label>
+        {% if not channel_closed %}
+        <label class="checks"><input type="checkbox" name="noi_bo" value="1"> Tin nội bộ, khách không thấy</label>
+        {% for reply in replies %}<button class="btn btn-line" type="submit" name="body" value="{{ reply.body }}">{{ reply.title }}</button>{% endfor %}
+        <button class="btn btn-blue" type="submit">Gửi</button>
+        {% endif %}
+      </form>
+      {% if channel_closed %}
+      <form method="post" action="{% url 'inbox_reply' current.pk %}">{% csrf_token %}
+        <input type="hidden" name="noi_bo" value="1">
+        <label class="field">Ghi chú nội bộ<textarea name="body"></textarea></label>
+        <button class="btn btn-line" type="submit">Lưu ghi chú</button>
+      </form>
+      {% endif %}
+      <form method="post" action="{% url 'inbox_booking' current.pk %}" style="margin-top:12px">{% csrf_token %}
+        <h2>Tạo lịch từ hội thoại</h2>
+        <p>Số sẵn có: {{ current.phone|default:"chưa có" }}</p>
+        <label class="field">Showroom<select name="showroom">{% for shop in showrooms %}<option value="{{ shop.id }}">{{ shop.name }}</option>{% endfor %}</select></label>
+        <label class="field">Dịch vụ<select name="service">{% for item in services %}<option value="{{ item.id }}">{{ item.name }}</option>{% endfor %}</select></label>
+        <label class="field">Ngày<input type="date" name="date" required></label>
+        <label class="field">Giờ<select name="time"><option>08:00</option><option>10:00</option><option>13:00</option><option>15:00</option><option>17:00</option></select></label>
+        <label class="field">Xe<input name="car" value="Chưa rõ"></label>
+        <button class="btn btn-red" type="submit">Tạo lịch</button>
+      </form>
+    {% else %}<p>Chọn một hội thoại.</p>{% endif %}
+  </div>
+</div>
+{% endblock %}

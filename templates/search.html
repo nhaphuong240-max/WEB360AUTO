@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static shop_tags %}
+{% block title %}Tìm kiếm — 360 Auto Detailing{% endblock %}
+{% block content %}
+<h1>Tìm kiếm</h1>
+<form method="get"><label class="field">Từ khóa<input name="q" value="{{ q }}" placeholder="man hinh, camera, ceramic"></label><button class="btn btn-blue" type="submit">Tìm</button></form>
+{% if q and not products and not services %}<p>Không thấy kết quả cho “{{ q }}”.</p><a href="{% url 'catalog' %}">Xem danh mục</a>{% endif %}
+<h2>Sản phẩm</h2>
+<div class="grid-3">{% for item in products %}
+  <article class="card product-card"><a href="{% url 'product' item.slug %}"><img src="{% static item.image %}" alt=""></a><div class="pad"><h3>{{ item.name }}</h3><div class="price"><b>{{ item.card_price|money }}</b></div></div></article>
+{% endfor %}</div>
+<h2>Dịch vụ</h2>
+<ul>{% for item in services %}<li><a href="{% url 'service' item.slug %}">{{ item.name }}</a></li>{% endfor %}</ul>
+<h2>Bài viết</h2>
+<ul>{% for item in articles %}<li><a href="{% url 'article' item.slug %}">{{ item.title }}</a></li>{% endfor %}</ul>
+{% endblock %}

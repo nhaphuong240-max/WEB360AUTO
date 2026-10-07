@@ -1,0 +1,10 @@
+<a class="logo" href="{% url 'home' %}">
+  {% if place == "footer" and site_config.footer_logo %}
+    <img class="logo-img" src="{{ site_config.footer_logo.url }}" alt="360 Auto Detailing">
+  {% elif place == "header" and site_config.header_logo %}
+    <img class="logo-img" src="{{ site_config.header_logo.url }}" alt="360 Auto Detailing">
+  {% else %}
+    <span class="logo-badge">360</span>
+  {% endif %}
+  <span><strong>AUTO DETAILING</strong><small>Phụ kiện & chăm sóc xe</small></span>
+</a>

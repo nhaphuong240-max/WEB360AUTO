@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load shop_tags %}
+{% block title %}Báo cáo — 360 Auto Detailing{% endblock %}
+{% block content %}
+<h1>Báo cáo</h1>
+<p>Doanh thu đơn hoàn thành: <b>{{ summary.revenue|money }}</b></p>
+<p><a class="btn btn-blue" href="?xuat=1">Xuất bảng tính</a></p>
+<h2>Số đơn theo trạng thái</h2>
+<ul>{% for row in summary.by_status %}<li>{{ row.status }}: {{ row.n }}</li>{% endfor %}</ul>
+<h2>Sản phẩm đã bán</h2>
+<ul>{% for row in summary.products %}<li>{{ row.name }} · {{ row.qty }} · {{ row.money|money }}</li>{% endfor %}</ul>
+<h2>Đối soát lệch tiền</h2>
+<ul>{% for row in reconcile %}<li>{{ row.order.code }} báo {{ row.reported_amount|money }}, đơn {{ row.expected_amount|money }}</li>{% empty %}<li>Không có mục lệch.</li>{% endfor %}</ul>
+{% endblock %}

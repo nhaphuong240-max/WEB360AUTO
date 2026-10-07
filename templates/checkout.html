@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load shop_tags %}
+{% block title %}Thanh toán — 360 Auto Detailing{% endblock %}
+{% block content %}
+<div class="steps"><span>Giỏ</span><span class="now">Thanh toán</span><span>Xác nhận</span></div>
+<h1>Thanh toán · {% if mode == "ship" %}Giao tận nơi{% else %}Lắp tại showroom{% endif %}</h1>
+<div class="grid-2">
+  <form class="card" method="post" style="padding:16px">{% csrf_token %}
+    {% if form.non_field_errors %}<p class="alert">{{ form.non_field_errors }}</p>{% endif %}
+    <label class="field">Họ tên {{ form.name }}</label>
+    <label class="field">Số điện thoại {{ form.phone }}{{ form.phone.errors }}</label>
+    <label class="field">Email {{ form.email }}</label>
+    {% if mode == "ship" %}
+      <label class="field">Khu vực {{ form.district }}</label>
+      <label class="field">Địa chỉ {{ form.address }}</label>
+    {% else %}
+      <p><b>{{ showroom.name }}</b><br>{{ showroom.address }}</p>
+      <label class="field">Ngày {{ form.appointment_date }}</label>
+      <label class="field">Khung giờ {{ form.appointment_time }}</label>
+    {% endif %}
+    {% if needs_car %}<label class="field">Hãng và dòng xe {{ form.car }}</label>{% endif %}
+    {% if mode == "ship" and lines.0.variant.product.fitment == "consult" %}<p class="note">Đơn có sản phẩm cần xác nhận độ vừa trước khi lắp.</p>{% endif %}
+    <label class="field">Mã giảm giá {{ form.coupon }}</label>
+    {% if not coupon.ok %}<p class="alert">{{ coupon.message }}</p>{% endif %}
+    <fieldset style="border:0;padding:0">
+      <legend><b>Thanh toán</b></legend>
+      {% if mode == "install" %}<label class="choice"><input type="radio" name="payment" value="cash" {% if form.payment.value == "cash" %}checked{% endif %}> Tiền mặt tại showroom</label>{% endif %}
+      <label class="choice"><input type="radio" name="payment" value="transfer" {% if mode == "ship" or form.payment.value == "transfer" %}checked{% endif %}> Chuyển khoản</label>
+      {% if mode == "ship" %}<label class="choice"><input type="radio" name="payment" value="gateway" {% if form.payment.value == "gateway" %}checked{% endif %}> Cổng {{ site_config.gateway|upper }}</label>{% endif %}
+    </fieldset>
+    <label class="checks"><input type="checkbox" name="agree" {% if form.agree.value %}checked{% endif %}> Tôi đồng ý điều kiện mua hàng</label>
+    {{ form.agree.errors }}
+    <button class="btn btn-line" type="submit" name="xem-phi" value="1">Cập nhật phí</button>
+    <button class="btn btn-red" type="submit" name="dat-hang" value="1">Đặt hàng</button>
+  </form>
+  <aside class="card money" style="padding:16px">
+    {% for line in lines %}<div><span>{{ line.variant.product.name }} × {{ line.qty }}</span><b>{{ line.line_total|money }}</b></div>{% endfor %}
+    <div><span>Giảm giá</span><b>{% if coupon.ok and coupon.amount %}-{{ coupon.amount|money }}{% else %}0đ{% endif %}</b></div>
+    <div><span>{% if mode == "install" %}Phí lắp{% else %}Phí giao{% endif %}</span><b>{% if fee == None %}Chọn khu vực{% else %}{{ fee|money }}{% endif %}</b></div>
+    <div class="total"><span>Tổng</span><span>{{ total|money }}</span></div>
+  </aside>
+</div>
+{% endblock %}

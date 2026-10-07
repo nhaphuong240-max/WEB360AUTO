@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Không thấy trang{% endblock %}
+{% block content %}
+<h1>Không thấy trang</h1>
+<p><a href="{% url 'home' %}">Về trang chủ</a> · <a href="{% url 'catalog' %}">Danh mục</a> · <a href="{% url 'search' %}">Tìm kiếm</a></p>
+{% endblock %}

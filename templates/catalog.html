@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static shop_tags %}
+{% block title %}Phụ kiện — 360 Auto Detailing{% endblock %}
+{% block content %}
+<p class="crumb"><a href="{% url 'home' %}">Trang chủ</a> / {{ category.name|default:"Phụ kiện xe hơi" }}</p>
+<h1>{{ category.name|default:"Phụ kiện xe hơi" }}</h1>
+<p class="lead">Lọc theo xe đang chọn để thấy phụ kiện vừa xe. Giá đã gồm VAT.</p>
+<div class="layout">
+  <aside class="panel">
+    <h2>Bộ lọc</h2>
+    <form method="post" action="{% url 'set_vehicle' %}">{% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <label class="field">Xe của bạn
+        <select name="vehicle" onchange="this.form.submit()">
+          <option value="">Tất cả xe</option>
+          {% for car in vehicles %}<option value="{{ car.slug }}" {% if selected.slug == car.slug %}selected{% endif %}>{{ car }}</option>{% endfor %}
+        </select>
+      </label>
+      <button class="btn btn-line" type="submit">Áp dụng</button>
+    </form>
+    <div class="checks">
+      <a href="{% url 'catalog' %}">Tất cả</a>
+      {% for cat in categories %}<a href="{% url 'catalog_cat' cat.slug %}">{{ cat.name }}</a>{% endfor %}
+      <a href="?stock=1&sort={{ sort }}">Chỉ còn hàng</a>
+    </div>
+  </aside>
+  <div>
+    <form method="get"><label class="field" style="max-width:220px">Sắp xếp
+      <select name="sort" onchange="this.form.submit()">
+        <option value="new" {% if sort == "new" %}selected{% endif %}>Mới nhất</option>
+        <option value="price-asc" {% if sort == "price-asc" %}selected{% endif %}>Giá tăng</option>
+        <option value="price-desc" {% if sort == "price-desc" %}selected{% endif %}>Giá giảm</option>
+        <option value="discount" {% if sort == "discount" %}selected{% endif %}>Giảm sâu nhất</option>
+      </select>
+    </label>{% if stock %}<input type="hidden" name="stock" value="1">{% endif %}</form>
+    <div class="grid-3">
+      {% for item in products %}
+      <article class="card product-card">
+        <a href="{% url 'product' item.slug %}"><img src="{% static item.image %}" alt="{{ item.name }}"></a>
+        <div class="pad">
+          {% if item.card_off %}<span class="tag">-{{ item.card_off }}%</span>{% endif %}
+          {% if item.fit_text %}<span class="tag {% if 'Vừa' in item.fit_text %}ok{% elif 'Không' in item.fit_text %}no{% else %}warn{% endif %}">{{ item.fit_text }}</span>{% endif %}
+          <h3><a href="{% url 'product' item.slug %}">{{ item.name }}</a></h3>
+          <div class="price"><b>{{ item.card_price|money }}</b>{% if item.card_compare %}<s>{{ item.card_compare|money }}</s>{% endif %}</div>
+          <div class="row-actions"><a class="btn btn-blue" href="{% url 'product' item.slug %}">Xem và chọn</a></div>
+        </div>
+      </article>
+      {% empty %}<p>Không có sản phẩm khớp bộ lọc.</p>{% endfor %}
+    </div>
+    {% if pages > 1 %}<p>Trang {{ page }} / {{ pages }}</p>{% endif %}
+  </div>
+</div>
+{% endblock %}

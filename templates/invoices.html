@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load shop_tags %}
+{% block title %}Dữ liệu hóa đơn — 360 Auto Detailing{% endblock %}
+{% block content %}
+{% include "staff_nav.html" %}
+<h1>Dữ liệu hóa đơn</h1>
+<p class="alert">Website không phát hành hóa đơn cơ quan thuế. Tệp chỉ để nhập vào phần mềm hóa đơn.</p>
+<p><a class="btn btn-blue" href="?xuat=1">Xuất tệp</a></p>
+{% for order in orders %}
+<article class="card" style="padding:14px;margin-bottom:10px">
+  <b>{{ order.code }}</b> · {{ order.name }} · {{ order.total|money }} · {{ order.status }}
+  <ul>{% for line in order.lines.all %}<li>{{ line.name }} × {{ line.qty }} · {{ line.unit_price|money }}</li>{% endfor %}</ul>
+</article>
+{% empty %}<p>Chưa có đơn đã hoàn thành để xuất.</p>{% endfor %}
+{% endblock %}

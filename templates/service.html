@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static shop_tags %}
+{% block title %}{{ service.name }} — 360 Auto Detailing{% endblock %}
+{% block content %}
+<p class="crumb"><a href="{% url 'home' %}">Trang chủ</a> / <a href="{% url 'services' %}">Dịch vụ</a> / {{ service.name }}</p>
+<div class="grid-2">
+  <div class="grid-2" style="grid-template-columns:1fr 1fr">
+    {% for item in services %}
+    <a class="card" style="padding:10px" href="{% url 'service' item.slug %}"><img src="{% static item.image %}" alt="" style="height:90px;width:100%;object-fit:cover;border-radius:10px"><strong>{{ item.name }}</strong></a>
+    {% endfor %}
+  </div>
+  <article class="card" style="padding:16px">
+    <img src="{% static service.image %}" alt="" style="height:180px;width:100%;object-fit:cover;border-radius:12px">
+    <h1>{{ service.name }}</h1>
+    <p>{{ service.summary }}</p>
+    <p>Thời lượng khoảng {{ service.minutes }} phút. Giá {{ service.price_from|money }} – {{ service.price_to|money }}.</p>
+    <ol>{% for step in service.step_list %}<li>{{ step }}</li>{% endfor %}</ol>
+    <h2>Đặt lịch</h2>
+    <form method="post">{% csrf_token %}
+      {% if form.non_field_errors %}<p class="alert">{{ form.non_field_errors }}</p>{% endif %}
+      <label class="field">Họ tên {{ form.name }}</label>
+      <label class="field">Số điện thoại {{ form.phone }}{{ form.phone.errors }}</label>
+      <label class="field">Showroom {{ form.showroom }}</label>
+      <label class="field">Ngày {{ form.date }}</label>
+      <label class="field">Giờ {{ form.time }}{{ form.time.errors }}</label>
+      <label class="field">Dòng xe {{ form.car }}</label>
+      <button class="btn btn-red" type="submit">Gửi lịch hẹn</button>
+    </form>
+    <p class="note">Khung 10:00 tại Quận 7 của phủ ceramic đang đóng chỗ.</p>
+  </article>
+</div>
+{% endblock %}

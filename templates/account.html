@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load shop_tags %}
+{% block title %}Tài khoản — 360 Auto Detailing{% endblock %}
+{% block content %}
+<h1>Tài khoản</h1>
+{% if not customer %}
+<p class="lead">Đăng ký bằng số điện thoại. Mã có hiệu lực 5 phút, tối đa 5 lần gửi mỗi giờ và 5 lần nhập sai.</p>
+{% if otp_preview %}<p class="okbox">Mã vừa tạo trong môi trường thử: <b>{{ otp_preview }}</b></p>{% endif %}
+<div class="grid-2">
+  <form class="card" method="post" action="{% url 'account_login' %}" style="padding:16px">{% csrf_token %}
+    <h2>Đăng nhập</h2>
+    <label class="field">Số điện thoại<input name="phone" required pattern="0[0-9]{9}"></label>
+    <label class="field">Mật khẩu<input name="password" type="password" required></label>
+    <button class="btn btn-blue" type="submit">Vào tài khoản</button>
+  </form>
+  <div class="card" style="padding:16px">
+    <h2>Đăng ký hoặc quên mật khẩu</h2>
+    <form method="post" action="{% url 'account_otp' %}">{% csrf_token %}
+      <label class="field">Số điện thoại<input name="phone" required pattern="0[0-9]{9}"></label>
+      <label class="choice"><input type="radio" name="purpose" value="register" checked> Đăng ký</label>
+      <label class="choice"><input type="radio" name="purpose" value="reset"> Đặt lại mật khẩu</label>
+      <button class="btn btn-line" type="submit">Gửi mã</button>
+    </form>
+    <form method="post" action="{% url 'account_register' %}" style="margin-top:12px">{% csrf_token %}
+      <label class="field">Mã 6 số<input name="code" required pattern="[0-9]{6}"></label>
+      <label class="field">Họ tên<input name="name"></label>
+      <label class="field">Email<input name="email" type="email"></label>
+      <label class="field">Mật khẩu mới<input name="password" type="password" required minlength="8"></label>
+      <button class="btn btn-red" type="submit">Xác nhận mã</button>
+    </form>
+  </div>
+</div>
+{% else %}
+<p>Xin chào <b>{{ customer.name }}</b> · {{ customer.phone }}</p>
+<form method="post" action="{% url 'account_logout' %}">{% csrf_token %}<button class="btn btn-line" type="submit">Thoát</button></form>
+<form class="card" method="post" action="{% url 'account_profile' %}" style="padding:16px;margin-top:12px">{% csrf_token %}
+  <h2>Hồ sơ</h2>
+  <label class="field">Tên<input name="name" value="{{ customer.name }}"></label>
+  <label class="field">Email<input name="email" value="{{ customer.email }}"></label>
+  <label class="field">Mật khẩu mới<input name="password" type="password" placeholder="Để trống nếu giữ mật khẩu cũ"></label>
+  <label class="checks"><input type="checkbox" name="promo" value="1" {% if customer.promo_opt_in %}checked{% endif %}> Nhận tin khuyến mãi</label>
+  <button class="btn btn-blue" type="submit">Lưu</button>
+  <button class="btn btn-line" name="xoa" value="1" type="submit">Yêu cầu xóa tài khoản</button>
+</form>
+<div class="grid-2" style="margin-top:16px">
+  <form class="card" method="post" action="{% url 'address_add' %}" style="padding:16px">{% csrf_token %}
+    <h2>Sổ địa chỉ ({{ addresses|length }}/10)</h2>
+    {% for row in addresses %}<p>{{ row.line }}, {{ row.district }}{% if row.is_default %} · mặc định{% endif %}</p>{% endfor %}
+    <label class="field">Địa chỉ<input name="line" required></label>
+    <label class="field">Khu vực<input name="district" value="Quận 7"></label>
+    <button class="btn btn-line" type="submit">Thêm địa chỉ</button>
+  </form>
+  <form class="card" method="post" action="{% url 'garage_add' %}" style="padding:16px">{% csrf_token %}
+    <h2>Garage ({{ cars|length }}/10)</h2>
+    {% for car in cars %}<p>{{ car.label }}</p>{% endfor %}
+    <label class="field">Xe<input name="label" required placeholder="Toyota Camry 2022"></label>
+    <button class="btn btn-line" type="submit">Thêm xe</button>
+  </form>
+</div>
+<h2>Đơn của tôi</h2>
+{% for order in orders %}
+<article class="card" style="padding:14px;margin-bottom:10px">
+  <b>{{ order.code }}</b> · {{ order.total|money }} · {{ order.status }}
+  {% if order.mode == "ship" %}<p>{{ order.address }}</p>{% endif %}
+  {% if order.status == "hoan_thanh" %}
+  <form method="post" action="{% url 'return_create' order.code %}">{% csrf_token %}
+    <label class="field">Dòng đổi trả<select name="line">{% for line in order.lines.all %}<option value="{{ line.id }}">{{ line.name }} × {{ line.qty }}</option>{% endfor %}</select></label>
+    <label class="field">Số lượng<input name="qty" type="number" min="1" value="1"></label>
+    <label class="field">Lý do<textarea name="reason" required></textarea></label>
+    <button class="btn btn-line" type="submit">Gửi yêu cầu đổi trả</button>
+  </form>
+  {% endif %}
+</article>
+{% empty %}<p>Chưa có đơn gắn tài khoản này.</p>{% endfor %}
+<h2>Phiếu đổi trả</h2>
+{% for ticket in returns %}<p>{{ ticket.code }} · {{ ticket.get_status_display }}{% if ticket.customer_note %} · {{ ticket.customer_note }}{% endif %}</p>{% empty %}<p>Chưa có phiếu.</p>{% endfor %}
+{% endif %}
+{% endblock %}

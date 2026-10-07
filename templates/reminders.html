@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Nhắc lịch — 360 Auto Detailing{% endblock %}
+{% block content %}
+{% include "staff_nav.html" %}
+<h1>Nhắc lịch</h1>
+<p class="note">Hệ thống gửi nhắc Zalo giao dịch khi còn dưới 2 giờ trước giờ hẹn. Lỗi gửi được ghi lại và không hủy lịch.</p>
+{% for item in logs %}
+<p>{% if item.ok %}Đã gửi{% else %}Thất bại{% endif %} · {{ item.target }} · {{ item.subject }}{% if item.error %} · {{ item.error }}{% endif %}</p>
+{% empty %}<p>Chưa có nhắc nào.</p>{% endfor %}
+{% endblock %}

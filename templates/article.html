@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }} — 360 Auto Detailing{% endblock %}
+{% block content %}
+<p class="crumb"><a href="{% url 'articles' %}">Bài viết</a> / {{ article.title }}</p>
+<h1>{{ article.title }}</h1>
+<p>{{ article.body|linebreaks }}</p>
+{% endblock %}

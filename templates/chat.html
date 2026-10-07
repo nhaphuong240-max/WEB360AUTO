@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Chat — 360 Auto Detailing{% endblock %}
+{% block content %}
+<h1>Chat với tư vấn</h1>
+<div class="card" style="padding:16px">
+  {% for item in thread %}
+  <p><b>{% if item.sender == "khach" %}Bạn{% elif item.sender == "he_thong" %}Tự động{% else %}Tư vấn{% endif %}</b> — {{ item.body }}</p>
+  {% empty %}<p>Gửi tin nhắn. Nếu ngoài giờ, hệ thống sẽ mời bạn để lại số điện thoại.</p>{% endfor %}
+  <form method="post" action="{% url 'chat_send' %}" enctype="multipart/form-data">{% csrf_token %}
+    <input type="hidden" name="next" value="{% url 'chat' %}">
+    <label class="field">Tên<input name="name" value="{{ conversation.name }}"></label>
+    <label class="field">Số điện thoại<input name="phone" value="{{ conversation.phone }}" placeholder="Không bắt buộc ở tin đầu"></label>
+    <label class="field">Nội dung<textarea name="body" required></textarea></label>
+    <label class="field">Ảnh<input type="file" name="image" accept="image/jpeg,image/png,image/webp"></label>
+    <button class="btn btn-red" type="submit">Gửi</button>
+  </form>
+</div>
+{% endblock %}
